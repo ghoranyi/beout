@@ -73,6 +73,7 @@ class TerminalWriterConfig(object):
     """
     box_style = partial(colored, color='magenta')
 
+    timestamp_enabled = True
     timestamp_format = '%H:%m:%S'
     timestamp_bracket_style = partial(colored, color='white')
     timestamp_style = partial(colored, color='grey')
@@ -313,11 +314,14 @@ class TerminalWriter(object):
            '\n' + style('└' + ('─' * (len(stripped) + 2)) + '┘'))
 
     def _timestamp(self):
-        return ''.join([
-            self._config.timestamp_bracket_style('['),
-            self._config.timestamp_style(datetime.now().strftime(self._config.timestamp_format)),
-            self._config.timestamp_bracket_style(']')
-        ])
+        if self._config.timestamp_enabled:
+            return ''.join([
+                self._config.timestamp_bracket_style('['),
+                self._config.timestamp_style(datetime.now().strftime(self._config.timestamp_format)),
+                self._config.timestamp_bracket_style(']')
+            ])
+        else:
+            return ''
 
     def line(self, text):
         return self._timestamp() + ' ' + self._substeps.str() + text
