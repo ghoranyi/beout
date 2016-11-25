@@ -324,7 +324,10 @@ class TerminalWriter(object):
             return ''
 
     def line(self, text):
-        return self._timestamp() + ' ' + self._substeps.str() + text
+        timestamp = self._timestamp()
+        if timestamp != "":
+            timestamp += ' '
+        return  timestamp + self._substeps.str() + text
 
     def msg(self, text):
         self._dotter.reset()
